@@ -10,10 +10,9 @@ class DriveService:
         self.service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
         folder_id='1f_OmKk4pBeFPzCqvyzWmlL_-m1laDMep'
         self.query = f"parents = '{folder_id}'"
-        response = self.service.files().list(q=self.query).execute()
-        self.files = response.get('files', [])
+        self.load()
 
-    def refresh(self):
+    def load(self):
         response = self.service.files().list(q=self.query).execute()
         self.files = response.get('files', [])
 

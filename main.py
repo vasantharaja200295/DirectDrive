@@ -1,9 +1,7 @@
 from flask import Flask, render_template, redirect, Response
 from dotenv import load_dotenv
 from flask_cors import CORS
-from pymongo import MongoClient
 from GoogleDriveService import DriveService
-import os
 
 
 load_dotenv('.env')
@@ -15,10 +13,8 @@ drive = DriveService()
 
 @app.route("/")
 def main():
-
-    sampleData = drive.display()
-
-    return render_template("index.html", data=sampleData)
+    displayData = drive.display()
+    return render_template("index.html", data=displayData)
 
 @app.route('/file/<filename>')
 def get_file_by_name(filename):
@@ -34,7 +30,7 @@ def get_file_by_name(filename):
     
 @app.route('/refresh')
 def refresh():
-    drive.refresh()
+    drive.load()
     return redirect('/')
 
 if __name__ == "__main__":
