@@ -14,6 +14,7 @@ class DriveService:
 
     def load(self):
         response = self.service.files().list(q=self.query).execute()
+        print(response)
         self.files = response.get('files', [])
 
 
