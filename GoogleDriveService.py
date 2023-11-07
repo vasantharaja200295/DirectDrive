@@ -8,8 +8,6 @@ class DriveService:
         SCOPES = ['https://www.googleapis.com/auth/drive']
 
         self.service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
-        folder_id='1f_OmKk4pBeFPzCqvyzWmlL_-m1laDMep'
-        self.query = f"parents = '{folder_id}'"
         self.load()
 
     def load(self):
