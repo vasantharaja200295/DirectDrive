@@ -1,8 +1,8 @@
 from Google import Create_Service
 
 class DriveService:
-    def __init__(self) -> None:
-        CLIENT_SECRET_FILE = "credentials.json"
+    def __init__(self, Client_secret) -> None:
+        CLIENT_SECRET_FILE = Client_secret
         API_NAME = 'drive'
         API_VERSION = 'v3'
         SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -11,8 +11,7 @@ class DriveService:
         self.load()
 
     def load(self):
-        response = self.service.files().list(q=self.query).execute()
-        print(response)
+        response = self.service.files().list().execute()
         self.files = response.get('files', [])
 
 
@@ -49,3 +48,19 @@ class DriveService:
             return response
         except Exception as e:
             return None
+        
+
+    def get_storage_usage(self):
+        try:
+            about = self.service.about().get(fields='storageQuota').execute()
+            storage_quota = about.get('storageQuota', {})
+            used_storage = storage_quota.get('usage')
+            total_storage = storage_quota.get('limit')
+
+            print(f'Used Storage: {int(used_storage)/(1024**3)} GB')
+            print(f'Total Storage: {int(total_storage)/(1024**3)} GB')
+
+        except Exception as e:
+            print('Error retrieving storage usage.')
+            print(e)
+

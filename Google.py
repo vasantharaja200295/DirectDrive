@@ -4,18 +4,15 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 import datetime
 
-def Create_Service(service_account_file, api_name, api_version, *scopes):
-    print(service_account_file, api_name, api_version, scopes, sep='-')
+def Create_Service(service_account_data, api_name, api_version, *scopes):
     API_SERVICE_NAME = api_name
     API_VERSION = api_version
     SCOPES = [scope for scope in scopes[0]]
-    print(SCOPES)
 
-    credentials = service_account.Credentials.from_service_account_file(service_account_file, scopes=SCOPES)
-
+    credentials = service_account.Credentials.from_service_account_info(service_account_data, scopes=SCOPES)
     try:
         service = build(API_SERVICE_NAME, API_VERSION, credentials=credentials)
-        print(API_SERVICE_NAME, 'service created successfully')
+        print(f"{str.capitalize(API_SERVICE_NAME)} service created successfully")
         return service
     except Exception as e:
         print('Unable to connect.')

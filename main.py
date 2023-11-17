@@ -1,15 +1,13 @@
 from flask import Flask, render_template, redirect, Response
-from dotenv import load_dotenv
 from flask_cors import CORS
 from GoogleDriveService import DriveService
+from dbService import dbService
 
-
-load_dotenv('.env')
 
 app = Flask(__name__)
 cors = CORS(app)
-
-drive = DriveService()
+db = dbService()
+drive = DriveService(Client_secret=db.getCredentials())
 
 @app.route("/")
 def main():
@@ -32,6 +30,11 @@ def get_file_by_name(filename):
 def refresh():
     drive.load()
     return redirect('/')
+
+@app.route('/about')
+def storage():
+    storage = drive.get_storage_usage()
+    return f"{storage}"
 
 if __name__ == "__main__":
     app.run(debug=True)
