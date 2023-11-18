@@ -60,7 +60,7 @@ def get_file_by_name(filename):
 @app.route('/refresh')
 def refresh():
     drive.load()
-    return redirect('/')
+    return redirect('/dashboard')
 
 @app.route('/about')
 def storage():
