@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, Response
+from flask import Flask, render_template, redirect, Response, request
 from flask_cors import CORS
 from GoogleDriveService import DriveService
 from dbService import dbService
@@ -9,7 +9,19 @@ cors = CORS(app)
 db = dbService()
 drive = DriveService(Client_secret=db.getCredentials())
 
-@app.route("/")
+@app.route('/', methods=['POST','GET'])
+@app.route('/login', methods=['POST',"GET"])
+def login():
+    if request.method == 'POST':
+        userData = request.form
+        print(userData)
+        db.login(username=userData.get('username'), password=userData.get('password'))
+        return redirect('/dashboard')
+    else:
+        return render_template('login.html')
+
+
+@app.route("/dashboard")
 def main():
     displayData = drive.display()
     return render_template("index.html", data=displayData)
@@ -34,7 +46,22 @@ def refresh():
 @app.route('/about')
 def storage():
     storage = drive.get_storage_usage()
-    return f"{storage}"
+    used = round(storage[0], 5)
+    total = storage[1]
+    value = (used / total) * 100
+    return render_template('about.html', used=used, total=total,value=value )
+
+@app.route('/upload', methods=['POST', 'GET'])
+def upload():
+    if request.method == "POST":
+        data = request.form.get('uploadFile')
+        print(data)
+        msg = drive.uploadFile(data)
+        return render_template('upload.html', msg=msg)
+    else:
+        return render_template('upload.html')
+    
+
 
 if __name__ == "__main__":
     app.run(debug=True)
