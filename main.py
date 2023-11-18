@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, Response, request
 from flask_cors import CORS
 from GoogleDriveService import DriveService
 from dbService import dbService
-
+import utils
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -14,12 +14,31 @@ drive = DriveService(Client_secret=db.getCredentials())
 def login():
     if request.method == 'POST':
         userData = request.form
-        print(userData)
-        db.login(username=userData.get('username'), password=userData.get('password'))
-        return redirect('/dashboard')
+        stats = db.login(username=userData.get('username'), password=userData.get('password'))
+        if stats.get('login') and stats.get('status')=='success':
+            return redirect('/dashboard')
+        else:
+            return render_template('login.html', message=stats.get('message'))
     else:
         return render_template('login.html')
 
+
+@app.route('/register', methods=['POST','GET'])
+def register():
+    if request.method == 'POST':
+        formData = request.form
+        username = formData.get("username")
+        password = formData.get('password')
+        confirmPassword = formData.get('confPassword')
+        if password != confirmPassword:
+            return render_template('signup.html', message='Password does not match')
+        else:
+            res = db.register(username=username, password=utils.hash(password))
+            if res.get('status')=='success':
+                return redirect('/login')
+            else:
+                return render_template('signup.html', message=res.get('message'))
+    return render_template('signup.html')
 
 @app.route("/dashboard")
 def main():
