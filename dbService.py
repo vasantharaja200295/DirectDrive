@@ -34,7 +34,7 @@ class dbService:
         user = self.db.find_one({"username":username})
         if user:
             if user.get('password') == utils.hash(password) and user.get('username') == username:
-                return {'login':True, 'status': "success", 'message':"Login Sucessfull"}
+                return {'login':True, 'status': "success", 'message':"Login Sucessfull", 'uid':user.get('_id')}
             else:
                 return {'login':False, 'status': "failed", 'message':"Invalid Username or Password"}
         else:

@@ -50,6 +50,14 @@ class DriveService:
         except Exception as e:
             return None
         
+    def deleteFile(self, file_id):
+        try:
+            self.service.files().delete(fileId=file_id).execute()
+            return True
+        except Exception as e:
+            print(e)
+            return False
+        
     def uploadFile(self, uploadFile):
         if uploadFile:
             try:
@@ -72,10 +80,7 @@ class DriveService:
             used_storage = storage_quota.get('usage')
             total_storage = storage_quota.get('limit')
 
-            print(f'Used Storage: {int(used_storage)/(1024**3)} GB')
-            print(f'Total Storage: {int(total_storage)/(1024**3)} GB')
             return int(used_storage)/(1024**3), int(total_storage)/(1024**3)
         except Exception as e:
-            print('Error retrieving storage usage.')
             print(e)
 
