@@ -1,5 +1,6 @@
 from Google import Create_Service
-
+from googleapiclient.http import MediaFileUpload
+import os
 class DriveService:
     def __init__(self, Client_secret) -> None:
         CLIENT_SECRET_FILE = Client_secret
@@ -11,7 +12,7 @@ class DriveService:
         self.load()
 
     def load(self):
-        response = self.service.files().list().execute()
+        response = self.service.files().list(q="'root' in parents", fields="files(id, name)").execute()
         self.files = response.get('files', [])
 
 
@@ -20,7 +21,7 @@ class DriveService:
         return index.get(filename)
     
 
-    def display(self, file_id=''):
+    def display(self):
         request_body = {
             'role': 'reader',
             'type': 'anyone'
@@ -49,6 +50,28 @@ class DriveService:
         except Exception as e:
             return None
         
+    def deleteFile(self, file_id):
+        try:
+            self.service.files().delete(fileId=file_id).execute()
+            return True
+        except Exception as e:
+            print(e)
+            return False
+        
+    def uploadFile(self, uploadFile):
+        if uploadFile:
+            try:
+                media = MediaFileUpload(uploadFile.replace('"',''), resumable=True)
+                self.service.files().create(
+                    media_body = media,
+                    body={'name': os.path.basename(uploadFile)}
+                ).execute()
+                return "File Upload Successfull"
+            except Exception as e:
+                return f"File upload Failed,\nError: {e}"
+        else:
+            return "Please select a file"
+
 
     def get_storage_usage(self):
         try:
@@ -57,10 +80,7 @@ class DriveService:
             used_storage = storage_quota.get('usage')
             total_storage = storage_quota.get('limit')
 
-            print(f'Used Storage: {int(used_storage)/(1024**3)} GB')
-            print(f'Total Storage: {int(total_storage)/(1024**3)} GB')
-
+            return int(used_storage)/(1024**3), int(total_storage)/(1024**3)
         except Exception as e:
-            print('Error retrieving storage usage.')
             print(e)
 

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DirectDrive | SignUp</title>
+</head>
+<body>
+    <div>
+        <h1>SignUp</h1>
+        <form action="{{url_for('register')}}" method="post">
+            <label for="username">Username</label>
+            <input type="text" name="username" id=""><br>
+            <label for="password">Password</label>
+            <input type="text" name="password" id=""><br>
+            <label for="confPassword">Confirm Password</label>
+            <input type="text" name="confPassword" id=""><br>
+            <button type="submit">SignUp</button>
+        </form>
+        <h4>{{message}}</h4>
+        <a href="{{url_for('login')}}">Login</a>
+    </div>
+</body>
+</html>

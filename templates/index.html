@@ -19,6 +19,7 @@
                 <h3 class="button-text">Refresh</h3>
             </button>
         </a>
+        <a href="{{url_for('logout')}}">Log Out</a>
         </header>
         <h2 class="sectionTitle">Files</h2>
         <div class="filesContainer">
@@ -26,6 +27,7 @@
             <div class="fileItem">
                 <img class="preview-image" src="{{item.image}}" />
                 <h3 class="file-name">{{item.name}}</h3>
+                <a href="{{url_for('delete', fileName=item.name)}}">Delete</a>
             </div>
             {% endfor %}
             
