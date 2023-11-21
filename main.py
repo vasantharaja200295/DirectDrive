@@ -16,6 +16,8 @@ loginManager = LoginManager(app)
 db = dbService()
 drive = DriveService(Client_secret=db.getCredentials())
 
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
 
 class User(UserMixin):
     def __init__(self, user_id) -> None:
@@ -117,6 +119,7 @@ def storage():
 @app.route('/upload', methods=['POST', 'GET'])
 @login_required
 def upload():
+    
     if request.method == "POST":
         data = request.files.get('uploadFile')
 
