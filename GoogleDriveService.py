@@ -79,7 +79,7 @@ class DriveService:
             storage_quota = about.get('storageQuota', {})
             used_storage = storage_quota.get('usage')
             total_storage = storage_quota.get('limit')
-
+            inMb = int(used_storage)/(1024**2)
             return int(used_storage)/(1024**3), int(total_storage)/(1024**3)
         except Exception as e:
             print(e)

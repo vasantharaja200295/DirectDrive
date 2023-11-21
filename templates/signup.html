@@ -1,24 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DirectDrive | SignUp</title>
-</head>
-<body>
-    <div>
-        <h1>SignUp</h1>
-        <form action="{{url_for('register')}}" method="post">
+    <link rel="stylesheet" href="/static/Signup.css" />
+  </head>
+  <body>
+
+    <div class="mainContainer">
+      <div class="titleContainer">
+        <ion-icon name="cloudy" class="logo"></ion-icon>
+        <h2>Direct Drive</h2>
+      </div>
+      <h2>Sign Up</h2>
+      <div class="formContainer">
+        <form action="{{url_for('register')}}" method="post" class="Form">
+          <div class="formItem">
             <label for="username">Username</label>
-            <input type="text" name="username" id=""><br>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              placeholder="Enter Username"
+            />
+          </div>
+          <div class="formItem">
             <label for="password">Password</label>
-            <input type="text" name="password" id=""><br>
+            <input
+              type="password"
+              name="password"
+              id=""
+              placeholder="Enter Password"
+            />
+          </div>
+          <div class="formItem">
             <label for="confPassword">Confirm Password</label>
-            <input type="text" name="confPassword" id=""><br>
-            <button type="submit">SignUp</button>
+            <input
+              type="password"
+              name="confPassword"
+              id=""
+              placeholder="Confirm Password"
+            />
+          </div>
+          <div class="bottomDiv">
+            <h5>{{message}}</h5>
+            <button type="submit">
+              Sign Up <ion-icon name="arrow-forward" />
+            </button>
+            <p>
+              Already have an account?
+              <span><a href="{{url_for('login')}}">Login!</a></span>
+            </p>
+          </div>
         </form>
-        <h4>{{message}}</h4>
-        <a href="{{url_for('login')}}">Login</a>
+      </div>
     </div>
-</body>
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+  </body>
 </html>

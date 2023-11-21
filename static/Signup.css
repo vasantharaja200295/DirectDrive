@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;800&display=swap');
+
+body{
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    font-family: 'inter';
+}
+
+.mainContainer{
+    height:500px;
+    width: 350px;
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.logo{
+    font-size: 60px;
+    color:#2c2c2c
+}
+
+.titleContainer{
+    width: 100%;
+    display: flex;
+    flex: 0 1;
+    align-items: center;
+    justify-content: flex-start;
+    gap:10px;
+}
+
+.formContainer{
+    height: 100%;
+    width:100%;
+}
+
+.Form{
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.formItem{
+    height:max-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-block-end: 10px;
+    gap:10px;
+}
+
+.formItem>input{
+    height:30px;
+    border-radius: 5px;
+    border: 1px solid #bdbdbd;
+    padding-inline: 10px;
+    font-family: 'inter';
+}
+
+.formItem>label{
+    color:#2c2c2c;
+}
+
+.formItem>input:focus{
+    outline: none;
+}
+
+.bottomDiv{
+    width: 100%;
+}
+
+.bottomDiv>button{
+    width: 100%;
+    height: 40px;
+    background-color: #2c2c2c;
+    color:#ffffff;
+    font-size: 16px;
+    font-family: 'inter';
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap:10px;
+}
+
+.bottomDiv>button>ion-icon{
+    font-size: 20px;
+    color: white;
+}
+
+.bottomDiv>button:hover{
+    background-color: #151515;
+}
+
+.bottomDiv>button:active{
+    scale: 0.9;
+}
+
+.bottomDiv>h5{
+    text-align: center;
+}
+
+.bottomDiv>p {
+    margin-top: 15px;
+    font-size: 13px;
+    color: #2c2c2c;
+}
+
+.bottomDiv>p>span>a{
+    font-weight: 700;
+    color:black;
+    text-decoration: underline;
+}
+

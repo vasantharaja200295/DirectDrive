@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DirectDrive | Login</title>
-</head>
-<body>
-    <div>
-        <form action="{{url_for('login')}}" method="post">
+    <link rel="stylesheet" href="/static/Login.css" />
+  </head>
+  <body>
+    <div class="mainContainer">
+      <div class="titleContainer">
+        <ion-icon name="cloudy" class="logo"></ion-icon>
+        <h2>Direct Drive</h2>
+      </div>
+      <h2>Login</h2>
+      <div class="formContainer">
+        <form action="{{url_for('login')}}" method="post" class="Form">
+          <div class="formItem">
             <label for="username">Username</label>
-            <input type="text" name="username" id="">
+            <input type="text" name="username" id="username" placeholder="Enter Username"/>
+          </div>
+          <div class="formItem">
             <label for="password">Password</label>
-            <input type="text" name="password" id="">
-            <button type="submit">Login</button>
+            <input type="password" name="password" id="" placeholder="Enter Password"/>
+          </div>
+          <div class="bottomDiv">
+            <h5>{{message}}</h5>
+            <button type="submit">Login <ion-icon name="arrow-forward"/></button>
+            <p>
+              Don't have an account?
+              <span><a href="{{url_for('register')}}">Sign Up!</a></span>
+            </p>
+          </div>
         </form>
-
-        <h4>{{message}}</h4>
-        <a href="{{url_for('register')}}">Sign Up</a>
-
+      </div>
     </div>
-</body>
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+  </body>
 </html>
