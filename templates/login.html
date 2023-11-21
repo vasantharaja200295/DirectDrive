@@ -17,15 +17,27 @@
         <form action="{{url_for('login')}}" method="post" class="Form">
           <div class="formItem">
             <label for="username">Username</label>
-            <input type="text" name="username" id="username" placeholder="Enter Username"/>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              placeholder="Enter Username"
+            />
           </div>
           <div class="formItem">
             <label for="password">Password</label>
-            <input type="password" name="password" id="" placeholder="Enter Password"/>
+            <input
+              type="password"
+              name="password"
+              id=""
+              placeholder="Enter Password"
+            />
           </div>
           <div class="bottomDiv">
             <h5>{{message}}</h5>
-            <button type="submit">Login <ion-icon name="arrow-forward"/></button>
+            <button type="submit">
+              Login <ion-icon name="arrow-forward" />
+            </button>
             <p>
               Don't have an account?
               <span><a href="{{url_for('register')}}">Sign Up!</a></span>

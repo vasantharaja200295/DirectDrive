@@ -66,11 +66,11 @@ class DriveService:
                     media_body = media,
                     body={'name': os.path.basename(uploadFile)}
                 ).execute()
-                return "File Upload Successfull"
+                return {'status':'success', 'message':"File Upload Successfull"}
             except Exception as e:
-                return f"File upload Failed,\nError: {e}"
+                return {'status':'success', 'message':f"File upload Failed,\nError: {e}"}
         else:
-            return "Please select a file"
+            return {'status':'success', 'message':"Please select a file"}
 
 
     def get_storage_usage(self):
