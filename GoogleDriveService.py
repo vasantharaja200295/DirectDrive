@@ -1,7 +1,6 @@
 from Google import Create_Service
 from googleapiclient.http import MediaIoBaseUpload
 from io import BufferedReader
-import os
 
 class DriveService:
     def __init__(self, Client_secret) -> None:
@@ -82,8 +81,8 @@ class DriveService:
             storage_quota = about.get('storageQuota', {})
             used_storage = storage_quota.get('usage')
             total_storage = storage_quota.get('limit')
-            inMb = int(used_storage)/(1024**2)
-            return int(used_storage)/(1024**3), int(total_storage)/(1024**3)
+            print(storage_quota)
+            return used_storage, total_storage
         except Exception as e:
             print(e)
 

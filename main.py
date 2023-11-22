@@ -5,7 +5,6 @@ from flask_cors import CORS
 from GoogleDriveService import DriveService
 from dbService import dbService
 import utils
-import os
 import io
 
 
@@ -72,7 +71,10 @@ def unauthorized():
 @login_required
 def main():
     displayData = drive.display()
-    return render_template("index.html", data=displayData)
+    storage = drive.get_storage_usage()
+    value = utils.calculate_percentage(used_memory=int(storage[0]), total_memory=int(storage[1]))
+    usedStorage = utils.format_used_memory(int(storage[0]))
+    return render_template("index.html", data=displayData, user=db.userName, usageValue=value, usedStorage=usedStorage)
 
 
 @app.route('/file/<filename>')
@@ -129,8 +131,6 @@ def upload():
             return render_template('upload.html', msg="File Already Exists")
         else:
             res = drive.uploadFile(buffer, data.mimetype)
-            # if res['status'] == 'success':
-            #     os.remove(filePath)
             return render_template('upload.html', msg=res['message'])
         
     else:

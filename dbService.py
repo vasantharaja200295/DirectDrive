@@ -15,6 +15,7 @@ class dbService:
         uri = f"mongodb+srv://{os.getenv('MONGOUSERNAME')}:{os.getenv('MONGOPASSWORD')}@cluster0.vpzkuqi.mongodb.net/?retryWrites=true&w=majority"
         self.client = MongoClient(uri, server_api=ServerApi('1'))
         self.fernet = Fernet
+        self.userName = ""
         try:
             self.client.admin.command('ping')
             print("Pinged your deployment. You successfully connected to MongoDB!")
@@ -34,6 +35,7 @@ class dbService:
         user = self.db.find_one({"username":username})
         if user:
             if user.get('password') == utils.hash(password) and user.get('username') == username:
+                self.userName = user.get('username')
                 return {'login':True, 'status': "success", 'message':"Login Sucessfull", 'uid':user.get('_id')}
             else:
                 return {'login':False, 'status': "failed", 'message':"Invalid Username or Password"}
