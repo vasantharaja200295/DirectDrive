@@ -6,6 +6,7 @@ from GoogleDriveService import DriveService
 from dbService import dbService
 import utils
 import os
+import io
 
 
 app = Flask(__name__)
@@ -16,7 +17,6 @@ loginManager = LoginManager(app)
 db = dbService()
 drive = DriveService(Client_secret=db.getCredentials())
 
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 
 class User(UserMixin):
@@ -81,7 +81,6 @@ def get_file_by_name(filename):
     file_data = drive.download_file_by_id(file_id=data.get('id'))
 
     if file_data:
-        # Set the content type according to your file type
         response = Response(file_data, content_type='image/jpeg')
         response.headers['Content-Disposition'] = 'inline'
         return response
@@ -122,17 +121,16 @@ def upload():
     
     if request.method == "POST":
         data = request.files.get('uploadFile')
-
         filename = secure_filename(data.filename)
-        filePath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        data.save(filePath)
-
+        buffer = io.BytesIO()
+        buffer.name = filename
+        data.save(buffer)
         if utils.contains_file(drive.files, filename):
             return render_template('upload.html', msg="File Already Exists")
         else:
-            res = drive.uploadFile(filePath)
-            if res['status'] == 'success':
-                os.remove(filePath)
+            res = drive.uploadFile(buffer, data.mimetype)
+            # if res['status'] == 'success':
+            #     os.remove(filePath)
             return render_template('upload.html', msg=res['message'])
         
     else:

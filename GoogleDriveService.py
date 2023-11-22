@@ -1,6 +1,8 @@
 from Google import Create_Service
-from googleapiclient.http import MediaFileUpload
+from googleapiclient.http import MediaIoBaseUpload
+from io import BufferedReader
 import os
+
 class DriveService:
     def __init__(self, Client_secret) -> None:
         CLIENT_SECRET_FILE = Client_secret
@@ -58,13 +60,14 @@ class DriveService:
             print(e)
             return False
         
-    def uploadFile(self, uploadFile):
+    def uploadFile(self, uploadFile, mimeType):
         if uploadFile:
             try:
-                media = MediaFileUpload(uploadFile.replace('"',''), resumable=True)
+                buffer_reader = BufferedReader(uploadFile)
+                media = MediaIoBaseUpload(buffer_reader,mimetype=mimeType ,resumable=True)
                 self.service.files().create(
                     media_body = media,
-                    body={'name': os.path.basename(uploadFile)}
+                    body={'name': uploadFile.name}
                 ).execute()
                 return {'status':'success', 'message':"File Upload Successfull"}
             except Exception as e:
