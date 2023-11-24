@@ -81,7 +81,6 @@ class DriveService:
             storage_quota = about.get('storageQuota', {})
             used_storage = storage_quota.get('usage')
             total_storage = storage_quota.get('limit')
-            print(storage_quota)
             return used_storage, total_storage
         except Exception as e:
             print(e)

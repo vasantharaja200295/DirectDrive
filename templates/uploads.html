@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width, initial-scale=1.0" />
+    <title>DirectDrive | Upload</title>
+    <link rel="stylesheet" type="text/css" href="/static/uploads.css" />
+  </head>
+  <body>
+    <div class="mainContainer">
+      <div class="header">
+        <div class="logoContainer">
+          <ion-icon name="cloudy" class="logo"></ion-icon>
+          <h2>Direct Drive</h2>
+        </div>
+        <a href="{{url_for('refresh')}}" class="refresh-button">
+          <ion-icon name="refresh"></ion-icon
+        ></a>
+      </div>
+      <div class="secondaryContainer">
+        <div class="sideBar">
+          <div class="navbar">
+            <a href="{{url_for('refresh')}}">
+              <div class="menuItem">
+                <ion-icon name="home" class="menuIcons"></ion-icon>
+                <h3>Home</h3>
+              </div>
+            </a>
+            <a href="{{url_for('upload')}}">
+              <div class="menuItem active">
+                <ion-icon name="cloud-upload" class="menuIcons"></ion-icon>
+                <h3>Upload</h3>
+              </div>
+            </a>
+          </div>
+          <div class="secondarySideDiv">
+            <a href="{{url_for('logout')}}" class="logout-button">
+              Logout<ion-icon name="log-out"></ion-icon
+            ></a>
+            <div class="storageStats">
+              <p>{{usedStorage}} / 15 GB Used</p>
+              <progress value="{{usageValue}}" id="storageProgress"></progress>
+            </div>
+          </div>
+        </div>
+        <div class="content">
+          <div class="textContainer">
+            <h2>Upload File</h2>
+            <p>Logged in as: <span class="username">{{user}}</span></p>
+          </div>
+          <div class="Content">
+            <div class="formContainer">
+              <form action="{{url_for('upload')}}" method="post" class="Form" novalidate  enctype="multipart/form-data">
+                <div class="formItem">
+                  <label for="filename">Rename File (Optional)</label>
+                  <input
+                    type="text"
+                    name="filename"
+                    id="fileName"
+                    placeholder="You can change the file name of the uploaded file"
+                  />
+                </div>
+                <label for="fileInput" class="custom-file-input">Choose Image</label>
+                <input
+                  type="file"
+                  id="fileInput"
+                  style="display: none"
+                  onchange="displayFilePreview(this)"
+                  name="uploadFile"
+                />
+                <div id="fileNameDisplay" class="file-name"></div>
+                <img id="imagePreview" src="" alt="Image Preview" />
+
+                <div class="bottomDiv">
+                    <h5>{{message}}</h5>
+                    <button type="submit">
+                        <ion-icon name="cloud-upload"></ion-icon> Upload 
+                    </button>
+                  </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+
+    <script>
+     function displayFilePreview(input) {
+      const fileNameDisplay = document.getElementById('fileNameDisplay');
+      const imagePreview = document.getElementById('imagePreview');
+      const customNameInput = document.getElementById('fileName');
+
+      if (input.files.length > 0) {
+        const file = input.files[0];
+
+        fileNameDisplay.textContent = 'Selected file: ' + file.name;
+
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+
+          reader.onload = function(e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block'; // Show the image preview
+          };
+
+          reader.readAsDataURL(file);
+        } else {
+          imagePreview.src = '';
+          imagePreview.style.display = 'none'; // Hide the image preview if not an image
+        }
+
+        // Set default value of the custom name input to the original file name
+        customNameInput.value = file.name;
+      } else {
+        fileNameDisplay.textContent = '';
+        imagePreview.src = '';
+        imagePreview.style.display = 'none'; // Hide the image preview if no file is selected
+        customNameInput.value = ''; // Clear the custom name input
+      }
+    }
+    </script>
+  </body>
+</html>

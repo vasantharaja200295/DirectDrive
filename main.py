@@ -70,11 +70,19 @@ def unauthorized():
 @app.route("/dashboard")
 @login_required
 def main():
+    global displayInfo
     displayData = drive.display()
     storage = drive.get_storage_usage()
     value = utils.calculate_percentage(used_memory=int(storage[0]), total_memory=int(storage[1]))
     usedStorage = utils.format_used_memory(int(storage[0]))
-    return render_template("index.html", data=displayData, user=db.userName, usageValue=value, usedStorage=usedStorage)
+    userName = db.userName
+    displayInfo = {
+        "storage":storage,
+        'value':value,
+        'usedStorage':usedStorage,
+        'userName': userName,
+    }
+    return render_template("index.html", data=displayData, user=userName, usageValue=value, usedStorage=usedStorage)
 
 
 @app.route('/file/<filename>')
@@ -107,34 +115,29 @@ def refresh():
     return redirect('/dashboard')
 
 
-@app.route('/about')
-@login_required
-def storage():
-    storage = drive.get_storage_usage()
-    used = round(storage[0], 5)
-    total = storage[1]
-    value = (used / total) * 100
-    return render_template('about.html', used=used, total=total, value=value)
-
 
 @app.route('/upload', methods=['POST', 'GET'])
 @login_required
 def upload():
-    
+    print(displayInfo)
     if request.method == "POST":
         data = request.files.get('uploadFile')
-        filename = secure_filename(data.filename)
-        buffer = io.BytesIO()
-        buffer.name = filename
-        data.save(buffer)
-        if utils.contains_file(drive.files, filename):
-            return render_template('upload.html', msg="File Already Exists")
+        print(data)
+        if data:
+            filename = request.form.get('filename')
+            buffer = io.BytesIO()
+            buffer.name = filename
+            data.save(buffer)
+            if utils.contains_file(drive.files, filename):
+                return render_template('uploads.html', message="File Already Exists", user=displayInfo['userName'], usageValue=displayInfo['value'], usedStorage=displayInfo['usedStorage'])
+            else:
+                res = drive.uploadFile(buffer, data.mimetype)
+                return render_template('uploads.html', message=res['message'], user=displayInfo['userName'], usageValue=displayInfo['value'], usedStorage=displayInfo['usedStorage'])
         else:
-            res = drive.uploadFile(buffer, data.mimetype)
-            return render_template('upload.html', msg=res['message'])
+            return 'upload failed'
         
     else:
-        return render_template('upload.html')
+        return render_template('uploads.html', user=displayInfo['userName'], usageValue=displayInfo['value'], usedStorage=displayInfo['usedStorage'])
 
 
 @app.route('/logout')
